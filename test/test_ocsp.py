@@ -281,6 +281,14 @@ def test_ocsp_with_invalid_cache_file():
             'Failed to validate: {}'.format(url)
 
 
+@pytest.mark.repeat(10000)
+def test_write_exists(tmpdir):
+    filename = path.join(tmpdir, 'cache')
+    with open(filename, 'w', encoding='utf-8') as f:
+        f.write('asd')
+    assert path.exists(filename), "OCSP response cache file"
+
+
 def test_concurrent_ocsp_requests(tmpdir):
     """Run OCSP revocation checks in parallel. The memory and file caches are deleted randomly."""
     cache_file_name = path.join(str(tmpdir), 'cache_file.txt')
